@@ -988,7 +988,7 @@ func (api *PublicEthereumAPI) GetProof(address common.Address, storageKeys []str
 		Balance:      (*hexutil.Big)(utils.MustUnmarshalBigInt(account.Balance)),
 		CodeHash:     common.BytesToHash(account.CodeHash),
 		Nonce:        hexutil.Uint64(account.Nonce),
-		StorageHash:  common.Hash{}, // Lsbchain doesn't have a storage hash
+		StorageHash:  common.Hash{}, // DogsChain doesn't have a storage hash
 		StorageProof: storageProofs,
 	}, nil
 }

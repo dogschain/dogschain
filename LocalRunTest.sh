@@ -28,7 +28,7 @@ dogschaincli config trust-node true
 # if $KEY exists it should be deleted
 dogschaincli keys add $KEY
 
-# Set moniker and chain-id for Lsbchain (Moniker can be anything, chain-id must be an integer)
+# Set moniker and chain-id for DogsChain (Moniker can be anything, chain-id must be an integer)
 dogschaind init $MONIKER --chain-id $CHAINID
 
 # Change parameter token denominations to dogs

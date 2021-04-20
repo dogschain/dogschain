@@ -1,4 +1,4 @@
-// This is a test utility for Lsbchain's Web3 JSON-RPC services.
+// This is a test utility for DogsChain's Web3 JSON-RPC services.
 //
 // To run these tests please first ensure you have the dogschaind running
 // and have started the RPC service with `dogschaincli rest-server`.

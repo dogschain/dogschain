@@ -60,7 +60,7 @@ func main() {
 
 	rootCmd := &cobra.Command{
 		Use:               "dogschaind",
-		Short:             "Lsbchain App Daemon (server)",
+		Short:             "DogsChain App Daemon (server)",
 		PersistentPreRunE: server.PersistentPreRunEFn(ctx),
 	}
 	// CLI commands to initialize the chain

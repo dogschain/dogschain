@@ -32,7 +32,7 @@ var big8 = big.NewInt(8)
 const (
 	// TypeMsgEthereumTx defines the type string of an Ethereum tranasction
 	TypeMsgEthereumTx = "ethereum"
-	// TypeMsgDogsChain defines the type string of Lsbchain message
+	// TypeMsgDogsChain defines the type string of DogsChain message
 	TypeMsgDogsChain = "dogschain"
 )
 
@@ -49,7 +49,7 @@ type MsgDogsChain struct {
 	From sdk.AccAddress `json:"from"`
 }
 
-// NewMsgDogsChain returns a reference to a new Lsbchain transaction
+// NewMsgDogsChain returns a reference to a new DogsChain transaction
 func NewMsgDogsChain(
 	nonce uint64, to *sdk.AccAddress, amount sdk.Int,
 	gasLimit uint64, gasPrice sdk.Int, payload []byte, from sdk.AccAddress,

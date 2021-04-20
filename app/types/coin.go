@@ -5,14 +5,14 @@ import (
 )
 
 const (
-	// AttoPhoton defines the default coin denomination used in Lsbchain in:
+	// AttoPhoton defines the default coin denomination used in DogsChain in:
 	//
 	// - Staking parameters: denomination used as stake in the dPoS chain
 	// - Mint parameters: denomination minted due to fee distribution rewards
 	// - Governance parameters: denomination used for spam prevention in proposal deposits
 	// - Crisis parameters: constant fee denomination used for spam prevention to check broken invariant
-	// - EVM parameters: denomination used for running EVM state transitions in Lsbchain.
-	AttoPhoton string = "dogs"
+	// - EVM parameters: denomination used for running EVM state transitions in DogsChain.
+	AttoPhoton string = sdk.DefaultBondDenom
 
 	// BaseDenomUnit defines the base denomination unit for Photons.
 	// 1 photon = 1x10^{BaseDenomUnit} aphoton

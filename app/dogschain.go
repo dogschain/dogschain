@@ -93,7 +93,7 @@ var (
 
 var _ simapp.App = (*DogsChainApp)(nil)
 
-// LsbchainApp implements an extended ABCI application. It is an application
+// DogsChainApp implements an extended ABCI application. It is an application
 // that may process transactions through Ethereum's EVM running atop of
 // Tendermint consensus.
 type DogsChainApp struct {
@@ -180,7 +180,7 @@ func NewDogsChainApp(
 	app.subspaces[evidence.ModuleName] = app.ParamsKeeper.Subspace(evidence.DefaultParamspace)
 	app.subspaces[evm.ModuleName] = app.ParamsKeeper.Subspace(evm.DefaultParamspace)
 
-	// use custom Lsbchain account for contracts
+	// use custom DogsChain account for contracts
 	app.AccountKeeper = auth.NewAccountKeeper(
 		cdc, keys[auth.StoreKey], app.subspaces[auth.ModuleName], dogschain.ProtoAccount,
 	)
