@@ -99,8 +99,8 @@ Note, strict routability for addresses is turned off in the config file.`,
 	cmd.Flags().String(flagStartingIPAddress, "192.168.0.1", "Starting IP address (192.168.0.1 results in persistent peers list ID0@192.168.0.1:46656, ID1@192.168.0.2:46656, ...)")
 	cmd.Flags().StringSlice(flagIPAddrs, []string{}, "List of IP addresses to use (i.e. `192.168.0.1,172.168.0.1` results in persistent peers list ID0@192.168.0.1:46656, ID1@172.168.0.1)")
 	cmd.Flags().String(flags.FlagChainID, "", "genesis file chain-id, if left blank will be randomly created")
-	cmd.Flags().String(flagCoinDenom, dogschain.AttoPhoton, "Coin denomination used for staking, governance, mint, crisis and evm parameters")
-	cmd.Flags().String(server.FlagMinGasPrices, fmt.Sprintf("0.000006%s", dogschain.AttoPhoton), "Minimum gas prices to accept for transactions; All fees in a tx must meet this minimum (e.g. 0.01dogs,0.001dogs)")
+	cmd.Flags().String(flagCoinDenom, dogschain.AttoDogs, "Coin denomination used for staking, governance, mint, crisis and evm parameters")
+	cmd.Flags().String(server.FlagMinGasPrices, fmt.Sprintf("0.000006%s", dogschain.AttoDogs), "Minimum gas prices to accept for transactions; All fees in a tx must meet this minimum (e.g. 0.01dogs,0.001dogs)")
 	cmd.Flags().String(flags.FlagKeyringBackend, flags.DefaultKeyringBackend, "Select keyring's backend (os|file|test)")
 	cmd.Flags().String(flagKeyAlgo, string(hd.EthSecp256k1), "Key signing algorithm to generate keys for")
 	return cmd

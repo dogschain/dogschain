@@ -51,10 +51,10 @@ func (suite *AccountTestSuite) TestEthAccount_Balance() {
 		initialCoins sdk.Coins
 		amount       sdk.Int
 	}{
-		{"positive diff", types.AttoPhoton, sdk.Coins{}, sdk.OneInt()},
-		{"zero diff, same coin", types.AttoPhoton, sdk.NewCoins(types.NewPhotonCoin(sdk.ZeroInt())), sdk.ZeroInt()},
+		{"positive diff", types.AttoDogs, sdk.Coins{}, sdk.OneInt()},
+		{"zero diff, same coin", types.AttoDogs, sdk.NewCoins(types.NewPhotonCoin(sdk.ZeroInt())), sdk.ZeroInt()},
 		{"zero diff, other coin", sdk.DefaultBondDenom, sdk.NewCoins(types.NewPhotonCoin(sdk.ZeroInt())), sdk.ZeroInt()},
-		{"negative diff", types.AttoPhoton, sdk.NewCoins(types.NewPhotonCoin(sdk.NewInt(10))), sdk.NewInt(1)},
+		{"negative diff", types.AttoDogs, sdk.NewCoins(types.NewPhotonCoin(sdk.NewInt(10))), sdk.NewInt(1)},
 	}
 
 	for _, tc := range testCases {

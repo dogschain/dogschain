@@ -201,7 +201,7 @@ func (suite *StateDBTestSuite) TestTransitionDb() {
 		{
 			"call disabled",
 			func() {
-				params := types.NewParams(dogschain.AttoPhoton, true, false)
+				params := types.NewParams(dogschain.AttoDogs, true, false)
 				suite.stateDB.SetParams(params)
 			},
 			types.StateTransition{
@@ -222,7 +222,7 @@ func (suite *StateDBTestSuite) TestTransitionDb() {
 		{
 			"create disabled",
 			func() {
-				params := types.NewParams(dogschain.AttoPhoton, false, true)
+				params := types.NewParams(dogschain.AttoDogs, false, true)
 				suite.stateDB.SetParams(params)
 			},
 			types.StateTransition{
@@ -245,7 +245,7 @@ func (suite *StateDBTestSuite) TestTransitionDb() {
 			func() {
 				suite.stateDB.SetParams(types.DefaultParams())
 				invalidGas := sdk.DecCoins{
-					{Denom: dogschain.AttoPhoton},
+					{Denom: dogschain.AttoDogs},
 				}
 				suite.ctx = suite.ctx.WithMinGasPrices(invalidGas)
 			},

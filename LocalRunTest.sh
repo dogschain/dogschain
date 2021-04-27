@@ -32,10 +32,10 @@ dogschaincli keys add $KEY
 dogschaind init $MONIKER --chain-id $CHAINID
 
 # Change parameter token denominations to dogs
-cat $HOME/.dogschaind/config/genesis.json | jq '.app_state["staking"]["params"]["bond_denom"]="dogs"' > $HOME/.dogschaind/config/tmp_genesis.json && mv $HOME/.dogschaind/config/tmp_genesis.json $HOME/.dogschaind/config/genesis.json
-cat $HOME/.dogschaind/config/genesis.json | jq '.app_state["crisis"]["constant_fee"]["denom"]="dogs"' > $HOME/.dogschaind/config/tmp_genesis.json && mv $HOME/.dogschaind/config/tmp_genesis.json $HOME/.dogschaind/config/genesis.json
-cat $HOME/.dogschaind/config/genesis.json | jq '.app_state["gov"]["deposit_params"]["min_deposit"][0]["denom"]="dogs"' > $HOME/.dogschaind/config/tmp_genesis.json && mv $HOME/.dogschaind/config/tmp_genesis.json $HOME/.dogschaind/config/genesis.json
-cat $HOME/.dogschaind/config/genesis.json | jq '.app_state["mint"]["params"]["mint_denom"]="dogs"' > $HOME/.dogschaind/config/tmp_genesis.json && mv $HOME/.dogschaind/config/tmp_genesis.json $HOME/.dogschaind/config/genesis.json
+cat $HOME/.dogschaind/config/genesis.json | jq '.app_state["staking"]["params"]["bond_denom"]="adogs"' > $HOME/.dogschaind/config/tmp_genesis.json && mv $HOME/.dogschaind/config/tmp_genesis.json $HOME/.dogschaind/config/genesis.json
+cat $HOME/.dogschaind/config/genesis.json | jq '.app_state["crisis"]["constant_fee"]["denom"]="adogs"' > $HOME/.dogschaind/config/tmp_genesis.json && mv $HOME/.dogschaind/config/tmp_genesis.json $HOME/.dogschaind/config/genesis.json
+cat $HOME/.dogschaind/config/genesis.json | jq '.app_state["gov"]["deposit_params"]["min_deposit"][0]["denom"]="adogs"' > $HOME/.dogschaind/config/tmp_genesis.json && mv $HOME/.dogschaind/config/tmp_genesis.json $HOME/.dogschaind/config/genesis.json
+cat $HOME/.dogschaind/config/genesis.json | jq '.app_state["mint"]["params"]["mint_denom"]="adogs"' > $HOME/.dogschaind/config/tmp_genesis.json && mv $HOME/.dogschaind/config/tmp_genesis.json $HOME/.dogschaind/config/genesis.json
 
 # increase block time (?)
 cat $HOME/.dogschaind/config/genesis.json | jq '.consensus_params["block"]["time_iota_ms"]="30000"' > $HOME/.dogschaind/config/tmp_genesis.json && mv $HOME/.dogschaind/config/tmp_genesis.json $HOME/.dogschaind/config/genesis.json
@@ -53,10 +53,10 @@ if [[ $1 == "pending" ]]; then
 fi
 
 # Allocate genesis accounts (cosmos formatted addresses)
-dogschaind add-genesis-account $(dogschaincli keys show $KEY -a) 100000000000000000000dogs
+dogschaind add-genesis-account $(dogschaincli keys show $KEY -a) 100000000000000000000adogs
 
 # Sign genesis transaction
-dogschaind gentx --name $KEY --amount=1000000000000000000dogs --keyring-backend test
+dogschaind gentx --name $KEY --amount=1000000000000000000adogs --keyring-backend test
 
 # Collect genesis tx
 dogschaind collect-gentxs
