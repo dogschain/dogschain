@@ -32,7 +32,6 @@ require (
 )
 
 replace (
-    //github.com/cosmos/cosmos-sdk => github.com/dogschain/cosmos-sdk v0.0.0-20210421051225-446ed1c888d2
-    github.com/cosmos/cosmos-sdk => /Users/likunmiao/chain-project/dogschain-cosmos-sdk
+    github.com/cosmos/cosmos-sdk => github.com/dogschain/cosmos-sdk v0.0.0-20210421051225-446ed1c888d2
 	github.com/gogo/protobuf => github.com/regen-network/protobuf v1.3.2-alpha.regen.4
 )
