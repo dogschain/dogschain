@@ -43,16 +43,14 @@ import (
 
 // PublicEthereumAPI is the eth_ prefixed set of APIs in the Web3 JSON-RPC spec.
 type PublicEthereumAPI struct {
-	ctx            context.Context
-	clientCtx      clientcontext.CLIContext
-	chainIDEpoch   *big.Int
-	logger         log.Logger
-	backend        backend.Backend
-	keys           []ethsecp256k1.PrivKey // unlocked keys
-	nonceLock      *rpctypes.AddrLocker
-	keyringLock    sync.Mutex
-	gasPrice       *hexutil.Big
-
+	ctx          context.Context
+	clientCtx    clientcontext.CLIContext
+	chainIDEpoch *big.Int
+	logger       log.Logger
+	backend      backend.Backend
+	keys         []ethsecp256k1.PrivKey // unlocked keys
+	nonceLock    *rpctypes.AddrLocker
+	keyringLock  sync.Mutex
 }
 
 // NewAPI creates an instance of the public ETH Web3 API.
@@ -74,7 +72,6 @@ func NewAPI(
 		backend:      backend,
 		keys:         keys,
 		nonceLock:    nonceLock,
-		gasPrice:     ParseGasPrice(),
 	}
 
 	if err := api.GetKeyringInfo(); err != nil {
@@ -191,7 +188,8 @@ func (api *PublicEthereumAPI) Hashrate() hexutil.Uint64 {
 // GasPrice returns the current gas price based on DogsChain's gas price oracle.
 func (api *PublicEthereumAPI) GasPrice() *hexutil.Big {
 	api.logger.Debug("eth_gasPrice")
-	return api.gasPrice
+	out := big.NewInt(0)
+	return (*hexutil.Big)(out)
 }
 
 // Accounts returns the list of accounts available to this node.
@@ -516,14 +514,14 @@ func (api *PublicEthereumAPI) SendRawTransaction(data hexutil.Bytes) (common.Has
 // Call performs a raw contract call.
 func (api *PublicEthereumAPI) Call(args rpctypes.CallArgs, blockNr rpctypes.BlockNumber, _ *map[common.Address]rpctypes.Account) (hexutil.Bytes, error) {
 	api.logger.Debug("eth_call", "args", args, "block number", blockNr)
-	simRes, err := api.doCall(args, blockNr, big.NewInt(dogschain.DefaultRPCGasLimit),true)
+	simRes, err := api.doCall(args, blockNr, big.NewInt(dogschain.DefaultRPCGasLimit))
 	if err != nil {
-		return []byte{}, TransformDataError(err, "eth_call")
+		return []byte{}, err
 	}
 
 	data, err := evmtypes.DecodeResultData(simRes.Result.Data)
 	if err != nil {
-		return []byte{}, TransformDataError(err, "eth_call")
+		return []byte{}, err
 	}
 
 	return (hexutil.Bytes)(data.Ret), nil
@@ -532,7 +530,7 @@ func (api *PublicEthereumAPI) Call(args rpctypes.CallArgs, blockNr rpctypes.Bloc
 // DoCall performs a simulated call operation through the evmtypes. It returns the
 // estimated gas used on the operation or an error if fails.
 func (api *PublicEthereumAPI) doCall(
-	args rpctypes.CallArgs, blockNum rpctypes.BlockNumber, globalGasCap *big.Int, isEstimate bool,
+	args rpctypes.CallArgs, blockNum rpctypes.BlockNumber, globalGasCap *big.Int,
 ) (*sdk.SimulationResponse, error) {
 
 	clientCtx := api.clientCtx
@@ -553,11 +551,7 @@ func (api *PublicEthereumAPI) doCall(
 		addr = *args.From
 	}
 
-	nonce := uint64(0)
-	if isEstimate && args.To == nil && args.Data != nil {
-		//only get real nonce when estimate gas and the action is contract deploy
-		nonce, _ = api.accountNonce(api.clientCtx, addr, true)
-	}
+	nonce, _ := api.accountNonce(api.clientCtx, addr, true)
 
 	// Set default gas & gas price if none were set
 	// Change this to uint64(math.MaxUint64 / 2) if gas cap can be configured
@@ -643,9 +637,9 @@ func (api *PublicEthereumAPI) doCall(
 // param from the SDK.
 func (api *PublicEthereumAPI) EstimateGas(args rpctypes.CallArgs) (hexutil.Uint64, error) {
 	api.logger.Debug("eth_estimateGas", "args", args)
-	simResponse, err := api.doCall(args, 0, big.NewInt(dogschain.DefaultRPCGasLimit), true)
+	simResponse, err := api.doCall(args, 0, big.NewInt(dogschain.DefaultRPCGasLimit))
 	if err != nil {
-		return 0, TransformDataError(err, "eth_estimateGas")
+		return 0, err
 	}
 
 	// TODO: change 1000 buffer for more accurate buffer (eg: SDK's gasAdjusted)
@@ -658,12 +652,7 @@ func (api *PublicEthereumAPI) EstimateGas(args rpctypes.CallArgs) (hexutil.Uint6
 // GetBlockByHash returns the block identified by hash.
 func (api *PublicEthereumAPI) GetBlockByHash(hash common.Hash, fullTx bool) (map[string]interface{}, error) {
 	api.logger.Debug("eth_getBlockByHash", "hash", hash, "full", fullTx)
-
-	block, err := api.backend.GetBlockByHash(hash, fullTx)
-	if err != nil {
-		return nil, TransformDataError(err, RPCEthGetBlockByHash)
-	}
-	return block, nil
+	return api.backend.GetBlockByHash(hash, fullTx)
 }
 
 // GetBlockByNumber returns the block identified by number.
@@ -886,10 +875,6 @@ func (api *PublicEthereumAPI) GetTransactionReceipt(hash common.Hash) (map[strin
 	if len(data.Logs) == 0 {
 		data.Logs = []*ethtypes.Log{}
 	}
-	contractAddr := &data.ContractAddress
-	if data.ContractAddress == common.HexToAddress("0x00000000000000000000") {
-		contractAddr = nil
-	}
 
 	receipt := map[string]interface{}{
 		// Consensus fields: These fields are defined by the Yellow Paper
@@ -901,7 +886,7 @@ func (api *PublicEthereumAPI) GetTransactionReceipt(hash common.Hash) (map[strin
 		// Implementation fields: These fields are added by geth when processing a transaction.
 		// They are stored in the chain database.
 		"transactionHash": hash,
-		"contractAddress": contractAddr,
+		"contractAddress": data.ContractAddress,
 		"gasUsed":         hexutil.Uint64(tx.TxResult.GasUsed),
 
 		// Inclusion information: These fields provide information about the inclusion of the
@@ -1021,7 +1006,7 @@ func (api *PublicEthereumAPI) generateFromArgs(args rpctypes.SendTxArgs) (*evmty
 	if args.GasPrice == nil {
 		// Set default gas price
 		// TODO: Change to min gas price from context once available through server/daemon
-		gasPrice = ParseGasPrice().ToInt()
+		gasPrice = big.NewInt(dogschain.DefaultGasPrice)
 	}
 
 	// get the nonce from the account retriever and the pending transactions
@@ -1040,7 +1025,7 @@ func (api *PublicEthereumAPI) generateFromArgs(args rpctypes.SendTxArgs) (*evmty
 	}
 
 	// Sets input to either Input or Data, if both are set and not equal error above returns
-	var input hexutil.Bytes
+	var input []byte
 	if args.Input != nil {
 		input = *args.Input
 	} else if args.Data != nil {
@@ -1059,7 +1044,7 @@ func (api *PublicEthereumAPI) generateFromArgs(args rpctypes.SendTxArgs) (*evmty
 			Gas:      args.Gas,
 			GasPrice: args.GasPrice,
 			Value:    args.Value,
-			Data:     &input,
+			Data:     args.Data,
 		}
 		gl, err := api.EstimateGas(callArgs)
 		if err != nil {
