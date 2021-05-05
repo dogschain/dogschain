@@ -53,10 +53,10 @@ if [[ $1 == "pending" ]]; then
 fi
 
 # Allocate genesis accounts (cosmos formatted addresses)
-dogschaind add-genesis-account $(dogschaincli keys show $KEY -a) 100000000000000000000adogs
+dogschaind add-genesis-account $(dogschaincli keys show $KEY -a) 100000000000000000000000000adogs
 
 # Sign genesis transaction
-dogschaind gentx --name $KEY --amount=1000000000000000000adogs --keyring-backend test
+dogschaind gentx --name $KEY --amount=10000000000000000000000000adogs --keyring-backend test
 
 # Collect genesis tx
 dogschaind collect-gentxs
