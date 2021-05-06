@@ -164,6 +164,8 @@ github.com/dogschain/cosmos-sdk v1.0.0 h1:I6mPSdGSWlF9H4temUbBIdCJkYXeOQH69Wv5gA
 github.com/dogschain/cosmos-sdk v1.0.0/go.mod h1:PbSREFoyGIOW2OD6muga691A1WiBMcEqLhMy7m+hUJs=
 github.com/dogschain/cosmos-sdk v1.0.1 h1:Qx1//RYoj0J1tr/dm7llHeEPgqOAQ865ALihOPXypjU=
 github.com/dogschain/cosmos-sdk v1.0.1/go.mod h1:PbSREFoyGIOW2OD6muga691A1WiBMcEqLhMy7m+hUJs=
+github.com/dogschain/cosmos-sdk v1.0.2 h1:m3lYSYYwLFWezUq/oHqR+kDqB6FvbfEmuVV91h9Sc3M=
+github.com/dogschain/cosmos-sdk v1.0.2/go.mod h1:PbSREFoyGIOW2OD6muga691A1WiBMcEqLhMy7m+hUJs=
 github.com/dop251/goja v0.0.0-20200721192441-a695b0cdd498/go.mod h1:Mw6PkjjMXWbTj+nnj4s3QPXq1jaT0s5pC0iFD4+BOAA=
 github.com/dustin/go-humanize v0.0.0-20171111073723-bb3d318650d4/go.mod h1:HtrtbFcZ19U5GC7JDqmcUSB87Iq5E25KnS6fMYU6eOk=
 github.com/dvsekhvalnov/jose2go v0.0.0-20200901110807-248326c1351b h1:HBah4D48ypg3J7Np4N+HY/ZR76fx3HEUGxDU6Uk39oQ=
